@@ -21,7 +21,7 @@ class IpQueryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         // 断言异常消息为 'Invalid response ip: ip4'
-        $this->expectExceptionMessage('Invalid ip value(ip4/ip6): ip4');
+        $this->expectExceptionMessage('Invalid ip value(IPV4): ip4');
 
         // 因为支持的格式为 xml/json，所以传入 array 会抛出异常
         $iqc->getCity('ip4');
@@ -52,7 +52,7 @@ class IpQueryTest extends TestCase
     public function testGetCity()
     {
         // 创建模拟接口响应值。
-        $response = new Response(200, [], '{"success": true}');
+        $response = new Response(200, [], '{"resultcode": 200,"result":{}}');
         // 创建模拟 http client。
         $client = \Mockery::mock(Client::class);
         // 指定将会产生的行为（在后续的测试中将会按下面的参数来调用）。
@@ -67,6 +67,6 @@ class IpQueryTest extends TestCase
         // $client 为上面创建的模拟实例。
         $iqc->allows()->getHttpClient()->andReturn($client);
         // 然后调用 `getCity` 方法，并断言返回值为模拟的返回值。
-        $this->assertSame(['success' => true], $iqc->getCity('127.0.0.1'));
+        $this->assertSame([], $iqc->getCity('127.0.0.1'));
     }
 }

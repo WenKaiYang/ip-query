@@ -49,9 +49,8 @@ class IpQuery
                 ->getBody()
                 ->getContents();
             $json = \json_decode($response, true);
-
-            if ($json['resultcode'] != 200) {
-                throw new HttpException($json['reason'], 500);
+            if (empty($json['resultcode']) || $json['resultcode'] != 200) {
+                throw new HttpException($json['reason'] ?? '未知错误', 500);
             }
             return $json['result'];
         } catch (GuzzleException $e) {
