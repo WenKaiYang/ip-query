@@ -37,8 +37,8 @@ class IpQuery
      */
     public function getCity(string $ip): array
     {
-        if (!\filter_var($ip, FILTER_VALIDATE_IP)) {
-            throw new InvalidArgumentException('Invalid ip value(ip4/ip6): ' . $ip);
+        if (!\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            throw new InvalidArgumentException('Invalid ip value(IPV4): ' . $ip);
         }
 
         try {
@@ -48,8 +48,12 @@ class IpQuery
                 ])
                 ->getBody()
                 ->getContents();
+            $json = \json_decode($response, true);
 
-            return \json_decode($response, true);
+            if ($json['resultcode'] != 200) {
+                throw new HttpException($json['reason'], 500);
+            }
+            return $json['result'];
         } catch (GuzzleException $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         } catch (\Exception $e) {
