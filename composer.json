@@ -1,0 +1,25 @@
+{
+    "name": "wenkaiyang/ip-query",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "WenKaiYang",
+            "email": "313097973@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WenKaiYang\\": "./src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.5"
+    }
+}
