@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of WenKaiYang/ip-query.
+ *
+ * @link     https://github.com/WenKaiYang
+ * @document https://github.com/WenKaiYang/ip-query/wiki
+ * @contact  https://github.com/WenKaiYang/ip-query
+ * @license  https://github.com/WenKaiYang/ip-query/issues
+ */
 namespace WenKaiYang;
 
 use GuzzleHttp\Client;
@@ -9,7 +18,6 @@ use WenKaiYang\Exceptions\InvalidArgumentException;
 
 class IpQuery
 {
-
     protected string $key;
 
     protected array $guzzleOptions = [];
@@ -30,21 +38,19 @@ class IpQuery
     }
 
     /**
-     * @param string $ip
-     * @return array
      * @throws HttpException
      * @throws InvalidArgumentException
      */
     public function getCity(string $ip): array
     {
-        if (!\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        if (! \filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             throw new InvalidArgumentException('Invalid ip value(IPV4): ' . $ip);
         }
 
         try {
             $response = $this->getHttpClient()
                 ->get('https://apis.juhe.cn/ip/ipNewV3', [
-                    'query' => ['ip' => $ip, 'key' => $this->key,]
+                    'query' => ['ip' => $ip, 'key' => $this->key],
                 ])
                 ->getBody()
                 ->getContents();
